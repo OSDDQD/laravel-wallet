@@ -26,8 +26,8 @@
     "ext-json": "*",
     "ext-pdo": "*",
     "brick/math": "~0.10",
-    "illuminate/contracts": "^11.0",
-    "illuminate/database": "^11.0",
+    "illuminate/contracts": "^10.0|^11.0",
+    "illuminate/database": "^10.0|^11.0",
     "ramsey/uuid": "^4.0"
   },
   "require-dev": {
