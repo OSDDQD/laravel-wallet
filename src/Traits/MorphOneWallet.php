@@ -39,7 +39,6 @@ trait MorphOneWallet
         return $castService
             ->getHolder($this) // Get the related holder model.
             ->morphOne($related, 'holder') // Define the Eloquent relationship.
-            ->withTrashed() // Include soft deleted wallets.
             ->where('slug', config('wallet.wallet.default.slug', 'default')) // Filter by the default wallet slug.
             ->withDefault(static function (WalletModel $wallet, object $holder) use (
                 $castService
