@@ -56,15 +56,14 @@ class Transaction extends Model
     ];
 
     /**
-     * @return array<string, string>
+     * The attributes that should be cast.
+     *
+     * @var array
      */
-    public function casts(): array
-    {
-        return [
-            'wallet_id' => 'int',
-            'meta' => 'json',
-        ];
-    }
+    protected $casts = [
+        'wallet_id' => 'int',
+        'meta' => 'json',
+    ];
 
     public function getTable(): string
     {

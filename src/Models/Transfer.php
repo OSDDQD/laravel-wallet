@@ -54,15 +54,14 @@ class Transfer extends Model
     ];
 
     /**
-     * @return array<string, string>
+     * The attributes that should be cast.
+     *
+     * @var array
      */
-    public function casts(): array
-    {
-        return [
-            'deposit_id' => 'int',
-            'withdraw_id' => 'int',
-        ];
-    }
+    protected $casts = [
+        'deposit_id' => 'int',
+        'withdraw_id' => 'int',
+    ];
 
     public function getTable(): string
     {

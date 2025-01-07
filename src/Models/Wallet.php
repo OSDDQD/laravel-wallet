@@ -71,14 +71,13 @@ class Wallet extends Model implements Customer, WalletFloat, Exchangeable
     ];
 
     /**
-     * @return array<string, string>
+     * The attributes that should be cast.
+     *
+     * @var array
      */
-    public function casts(): array
-    {
-        return [
-            'decimal_places' => 'int',
-        ];
-    }
+    protected $casts = [
+        'decimal_places' => 'int',
+    ];
 
     public function getTable(): string
     {

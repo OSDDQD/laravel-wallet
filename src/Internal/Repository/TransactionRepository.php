@@ -31,7 +31,7 @@ final readonly class TransactionRepository implements TransactionRepositoryInter
                 $this->transformer->extract($object)
             );
         }
-
+        
         $this->transaction->newQuery()
             ->insert($values);
     }
