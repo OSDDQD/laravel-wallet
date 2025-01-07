@@ -24,7 +24,6 @@ use function config;
 use DateTimeInterface;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\RecordsNotFoundException;
 use Illuminate\Support\Str;
 
@@ -33,28 +32,21 @@ use Illuminate\Support\Str;
  *
  * @property class-string $holder_type
  * @property int|non-empty-string $holder_id
- * @property string $name
  * @property string $slug
  * @property non-empty-string $uuid
- * @property string $description
- * @property null|array<mixed> $meta
  * @property int $decimal_places
  * @property Model $holder
- * @property non-empty-string $credit
  * @property string $currency
  * @property DateTimeInterface $created_at
  * @property DateTimeInterface $updated_at
- * @property DateTimeInterface $deleted_at
  *
  * @method int getKey()
  */
-class Wallet extends Model implements Customer, WalletFloat, Confirmable, Exchangeable
+class Wallet extends Model implements Customer, WalletFloat, Exchangeable
 {
-    use CanConfirm;
     use CanExchange;
     use CanPayFloat;
     use HasGift;
-    use SoftDeletes;
 
     /**
      * @var array<int, string>
@@ -62,11 +54,8 @@ class Wallet extends Model implements Customer, WalletFloat, Confirmable, Exchan
     protected $fillable = [
         'holder_type',
         'holder_id',
-        'name',
         'slug',
         'uuid',
-        'description',
-        'meta',
         'balance',
         'decimal_places',
         'created_at',
@@ -88,7 +77,6 @@ class Wallet extends Model implements Customer, WalletFloat, Confirmable, Exchan
     {
         return [
             'decimal_places' => 'int',
-            'meta' => 'json',
         ];
     }
 
@@ -99,21 +87,6 @@ class Wallet extends Model implements Customer, WalletFloat, Confirmable, Exchan
         }
 
         return parent::getTable();
-    }
-
-    public function setNameAttribute(string $name): void
-    {
-        $this->attributes['name'] = $name;
-        /**
-         * Must be updated only if the model does not exist or the slug is empty.
-         */
-        if ($this->exists) {
-            return;
-        }
-        if (array_key_exists('slug', $this->attributes)) {
-            return;
-        }
-        $this->attributes['slug'] = Str::slug($name);
     }
 
     /**
@@ -148,9 +121,7 @@ class Wallet extends Model implements Customer, WalletFloat, Confirmable, Exchan
 
     public function getAvailableBalanceAttribute(): float|int|string
     {
-        $balance = $this->walletTransactions()
-            ->where('confirmed', true)
-            ->sum('amount');
+        $balance = $this->walletTransactions()->sum('amount');
 
         // Perform assertion to check if balance is not an empty string
         assert($balance !== '', 'Balance should not be an empty string');
@@ -168,27 +139,12 @@ class Wallet extends Model implements Customer, WalletFloat, Confirmable, Exchan
 
     public function getCreditAttribute(): string
     {
-        $credit = (string) ($this->meta['credit'] ?? '0');
-
-        /**
-         * Assert that the credit attribute is not an empty string.
-         *
-         * This is to ensure that the credit attribute always has a value.
-         * If the credit attribute is empty, it can cause issues with the math service.
-         *
-         * @throws \AssertionError If the credit attribute is an empty string.
-         */
-        // Assert that credit is not an empty string
-        // This is to ensure that the credit attribute always has a value
-        // If the credit attribute is empty, it can cause issues with the math service
-        assert($credit !== '', 'Credit should not be an empty string. It can cause issues with the math service.');
-
-        return $credit;
+        return '0';
     }
 
     public function getCurrencyAttribute(): string
     {
-        return $this->meta['currency'] ?? Str::upper($this->slug);
+        return Str::upper($this->slug);
     }
 
     protected function initializeMorphOneWallet(): void

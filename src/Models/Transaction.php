@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Bavix\Wallet\Models;
 
 use Bavix\Wallet\Interfaces\Wallet;
-use Bavix\Wallet\Internal\Observers\TransactionObserver;
 use Bavix\Wallet\Internal\Service\MathServiceInterface;
 use Bavix\Wallet\Models\Wallet as WalletModel;
 use Bavix\Wallet\Services\CastServiceInterface;
@@ -14,7 +13,6 @@ use DateTimeInterface;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Class Transaction.
@@ -33,14 +31,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property WalletModel $wallet
  * @property DateTimeInterface $created_at
  * @property DateTimeInterface $updated_at
- * @property DateTimeInterface $deleted_at
  *
  * @method int getKey()
  */
 class Transaction extends Model
 {
-    use SoftDeletes;
-
     final public const TYPE_DEPOSIT = 'deposit';
 
     final public const TYPE_WITHDRAW = 'withdraw';
@@ -55,7 +50,6 @@ class Transaction extends Model
         'uuid',
         'type',
         'amount',
-        'confirmed',
         'meta',
         'created_at',
         'updated_at',
@@ -68,7 +62,6 @@ class Transaction extends Model
     {
         return [
             'wallet_id' => 'int',
-            'confirmed' => 'bool',
             'meta' => 'json',
         ];
     }
@@ -123,12 +116,5 @@ class Transaction extends Model
         $decimalPlaces = $math->powTen($decimalPlacesValue);
 
         $this->amount = $math->round($math->mul($amount, $decimalPlaces));
-    }
-
-    protected static function boot(): void
-    {
-        parent::boot();
-
-        static::observe(TransactionObserver::class);
     }
 }

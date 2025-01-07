@@ -86,7 +86,7 @@ return [
          *
          * @var string
          */
-        'driver' => env('WALLET_CACHE_DRIVER', 'array'),
+        'driver' => env('WALLET_CACHE_DRIVER', 'redis'),
 
         /**
          * The time to live for the cache in seconds.
@@ -116,7 +116,7 @@ return [
          *
          * @var string
          */
-        'driver' => env('WALLET_LOCK_DRIVER', 'array'),
+        'driver' => env('WALLET_LOCK_DRIVER', 'redis'),
 
         /**
          * The time to live for the lock in seconds.
@@ -486,25 +486,11 @@ return [
          */
         'default' => [
             /**
-             * The name of the default wallet.
-             *
-             * @var string
-             */
-            'name' => env('WALLET_DEFAULT_WALLET_NAME', 'Default Wallet'),
-
-            /**
              * The slug of the default wallet.
              *
              * @var string
              */
-            'slug' => env('WALLET_DEFAULT_WALLET_SLUG', 'default'),
-
-            /**
-             * The meta information of the default wallet.
-             *
-             * @var array<string, mixed>
-             */
-            'meta' => [],
+            'slug' => env('WALLET_DEFAULT_WALLET_SLUG', 'RUB'),
         ],
     ],
 ];
