@@ -17,7 +17,6 @@ final class TransactionDtoTransformer implements TransactionDtoTransformerInterf
             'wallet_id' => $dto->getWalletId(),
             'type' => $dto->getType(),
             'amount' => $dto->getAmount(),
-            'confirmed' => $dto->isConfirmed(),
             'meta' => $dto->getMeta(),
             'created_at' => $dto->getCreatedAt(),
             'updated_at' => $dto->getUpdatedAt(),
