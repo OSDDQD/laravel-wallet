@@ -55,9 +55,7 @@ trait MorphOneWallet
 
                 // Fill the default wallet attributes.
                 $wallet->forceFill(array_merge(config('wallet.wallet.creating', []), [
-                    'name' => config('wallet.wallet.default.name', 'Default Wallet'), // Default wallet name.
                     'slug' => $slug, // Default wallet slug.
-                    'meta' => config('wallet.wallet.default.meta', []), // Default wallet metadata.
                     'balance' => 0, // Default wallet balance.
                 ]));
 

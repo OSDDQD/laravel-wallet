@@ -133,10 +133,7 @@ trait HasWallets
      *                   specified, the default value is 2.
      *
      * @param array{
-     *     name: string,
      *     slug?: string,
-     *     description?: string,
-     *     meta?: array<mixed>|null,
      *     decimal_places?: positive-int,
      * } $data The data for the new wallet.
      * @return WalletModel The new wallet object.
